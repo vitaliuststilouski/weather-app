@@ -1,22 +1,31 @@
-import React, { Component } from 'react';
-import Fields from '../fields/fields';
-import './Dashboard.css';
+import React, { Component } from "react";
+// import { Fields } from "../fields/fields";
+import "./Dashboard.css";
 
+interface Cell {
+  cell: number
+}
 
+const cells: Array<Cell> = [{cell: 1 }, {cell: 2 }, {cell: 3 }, {cell: 4 }];
 
-class Dashboard extends Component{
-
-
+export class Dashboard extends Component<any, any> {
+  Fields = () => {
+      return cells.map((el, i): object => {
+        return <div key={i}  className="cell">{el.cell}</div>
+      })
+  };
 
   render() {
     return (
       <div className="dashboard">
-        <h1>Weather Forecast</h1>
-        <button>Add City</button>
-        <Fields fields={16}/>
+        <h1 className="title">Weather Forecast</h1>
+        <div className="btn-add">
+          <button onClick={() => console.log("Modal icon")}>Add City</button>
+        </div>
+        <div className="fields">
+        {this.Fields()}
+        </div>
       </div>
-    )
+    );
   }
 }
-
-export default Dashboard;
