@@ -1,11 +1,8 @@
-import React from 'react';
+import React from "react";
+import { render } from "@testing-library/react";
 
-interface FieldsProps {
-    fields?: number;
-}
+type FieldsProps = {
+  fields?: string;
+};
 
-const Fields = (props: FieldsProps): JSX.Element => {
-    return <div>{props.fields}</div>
-}
-
-export default Fields;
+const cells: Array<string> = ['1','2'];
