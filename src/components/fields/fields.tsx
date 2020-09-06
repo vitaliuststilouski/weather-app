@@ -1,8 +1,12 @@
 import React from "react";
-import { render } from "@testing-library/react";
 
-type FieldsProps = {
-  fields?: string;
+import "./fields.css";
+
+
+const cells: {cell: number}[] = [{cell: 1 }, {cell: 2 }, {cell: 3 }, {cell: 4 }];
+
+export const Fields = (): any => {
+  return cells.map((el: any, i: number) => {
+    return <div key={i}  className="cell">{el.cell}</div>
+  })
 };
-
-const cells: Array<string> = ['1','2'];

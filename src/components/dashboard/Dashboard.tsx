@@ -1,29 +1,44 @@
 import React, { Component } from "react";
-// import { Fields } from "../fields/fields";
-import "./Dashboard.css";
+import { Fields } from "../fields/fields";
+import { AddButton } from '../add-button/add-button';
+import { ModalWindow } from '../modal-window/modal-window';
+import "./dashboard.css";
 
-interface Cell {
-  cell: number
-}
 
-const cells: Array<Cell> = [{cell: 1 }, {cell: 2 }, {cell: 3 }, {cell: 4 }];
 
 export class Dashboard extends Component<any, any> {
-  Fields = () => {
-      return cells.map((el, i): object => {
-        return <div key={i}  className="cell">{el.cell}</div>
-      })
-  };
+  constructor(props: any) {
+    super(props);
+    this.onCloseWindow = this.onCloseWindow.bind(this);
+  }
+
+  state = {
+      showModal: false,
+  }
+
+
+  showModalWindow() {
+    this.setState({
+      showModal: true
+    })
+  }
+
+  onCloseWindow() {
+    this.setState({
+      showModal: !this.state.showModal
+    })
+  }
 
   render() {
     return (
       <div className="dashboard">
         <h1 className="title">Weather Forecast</h1>
-        <div className="btn-add">
-          <button onClick={() => console.log("Modal icon")}>Add City</button>
-        </div>
+        {/* <AddButton /> */}
+        <button onClick = {():void => this.showModalWindow()}>Add City</button>
+
+        <ModalWindow onClose={this.onCloseWindow} showModal={this.state.showModal}/>
         <div className="fields">
-        {this.Fields()}
+        {/* <Fields /> */}
         </div>
       </div>
     );
