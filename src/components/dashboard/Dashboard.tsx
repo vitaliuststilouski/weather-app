@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { Fields } from "../fields/fields";
 import { ModalWindow } from '../modal-window/modal-window';
+import { WeatherService } from '../../services/weather-service/weather-searvice';
 import "./dashboard.css";
-
 
 
 export class Dashboard extends Component<any, any> {
@@ -27,18 +27,22 @@ export class Dashboard extends Component<any, any> {
     })
   }
 
+  
+
   render() {
+    const weather = new WeatherService();
+
+    weather.getCheck().then((body) => {
+        console.log(body)
+    })
     return (
       <div className="dashboard">
         <h1 className="title">Weather Forecast</h1>
-        <div className="btn-add-wrapper">
-          <button className="btn-add" onClick = {():void => this.showModalWindow()}>Add City</button>
+        <div className="add-btn-wrapper">
+          <button className="add-btn" onClick = {():void => this.showModalWindow()}>Select City</button>
         </div>
-
         <ModalWindow onClose={this.onCloseWindow} showModal={this.state.showModal}/>
-        {/* <div className="fields"> */}
         {/* <Fields /> */}
-        {/* </div> */}
       </div>
     );
   }

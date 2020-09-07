@@ -1,12 +1,13 @@
 .dashboard {
   width: 600px;
   margin: 0 auto;
+  margin-top: 50px;
 }
 
 .title {
   text-align: center;
 }
 
-.btn-add-wrapper {
+.add-btn-wrapper {
   text-align: center;
 }
