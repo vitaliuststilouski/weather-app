@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Fields } from "../fields/fields";
-import { AddButton } from '../add-button/add-button';
 import { ModalWindow } from '../modal-window/modal-window';
 import "./dashboard.css";
 
@@ -15,7 +14,6 @@ export class Dashboard extends Component<any, any> {
   state = {
       showModal: false,
   }
-
 
   showModalWindow() {
     this.setState({
@@ -33,13 +31,14 @@ export class Dashboard extends Component<any, any> {
     return (
       <div className="dashboard">
         <h1 className="title">Weather Forecast</h1>
-        {/* <AddButton /> */}
-        <button onClick = {():void => this.showModalWindow()}>Add City</button>
+        <div className="btn-add-wrapper">
+          <button className="btn-add" onClick = {():void => this.showModalWindow()}>Add City</button>
+        </div>
 
         <ModalWindow onClose={this.onCloseWindow} showModal={this.state.showModal}/>
-        <div className="fields">
+        {/* <div className="fields"> */}
         {/* <Fields /> */}
-        </div>
+        {/* </div> */}
       </div>
     );
   }
