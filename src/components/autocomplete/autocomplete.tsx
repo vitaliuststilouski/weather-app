@@ -1,8 +1,6 @@
 import React, { Component, Fragment } from "react";
 
-
 import './autocomplete.css'
-
 
 type State = {
     activeOption: number,
@@ -11,9 +9,7 @@ type State = {
     userInput: string
 };
 
-
 export class Autocomplete extends Component<any>{
-   
 
     state: State = {
         activeOption: 0,
@@ -21,7 +17,6 @@ export class Autocomplete extends Component<any>{
         showOptions: false,
         userInput: ''
     };
-
 
     onChange = (e: any) => {
         const { options } = this.props;
@@ -71,7 +66,9 @@ export class Autocomplete extends Component<any>{
         }
     };
 
+
     render() {
+
         const {
             onChange,
             onClick,
@@ -106,8 +103,10 @@ export class Autocomplete extends Component<any>{
                 );
             }
         }
+
         return (
-            <Fragment>
+
+        <Fragment>
                  <div className="search">
                      <input placeholder= "Select City"
                             type="text" 
@@ -116,7 +115,6 @@ export class Autocomplete extends Component<any>{
                             onKeyDown={onKeyDown}
                             value={userInput}
                         />
-                        {/* <input type="submit" value="" className="search-btn"/> */}
                     </div>
                     {optionList}
             </Fragment>
