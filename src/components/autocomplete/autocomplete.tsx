@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, {Component, Fragment} from "react";
 
 import './autocomplete.css'
 
@@ -9,7 +9,11 @@ type State = {
     userInput: string
 };
 
-export class Autocomplete extends Component<any>{
+export class Autocomplete extends Component<any> {
+    constructor(props: any) {
+        super(props);
+        this.getInput = this.getInput.bind(this);
+    }
 
     state: State = {
         activeOption: 0,
@@ -18,14 +22,18 @@ export class Autocomplete extends Component<any>{
         userInput: ''
     };
 
+    getInput = (e: any) => this.props.onInput(e);
+
     onChange = (e: any) => {
-        const { options } = this.props;
+        const {options} = this.props;
         const userInput = e.currentTarget.value;
+
+        this.getInput(e);
 
         const filteredOptions = options.filter(
             (optionName: any) =>
-              optionName.toLowerCase().indexOf(userInput.toLowerCase()) > -1
-          );
+                optionName.toLowerCase().indexOf(userInput.toLowerCase()) > -1
+        );
 
         this.setState({
             activeOption: 0,
@@ -45,7 +53,7 @@ export class Autocomplete extends Component<any>{
     };
 
     onKeyDown = (e: any) => {
-        const { activeOption, filteredOptions } = this.state;
+        const {activeOption, filteredOptions} = this.state;
 
         if (e.keyCode === 13) {
             this.setState({
@@ -54,7 +62,7 @@ export class Autocomplete extends Component<any>{
                 userInput: filteredOptions[activeOption]
             });
         } else if (e.keyCode === 38) {
-            if (activeOption === 0 ) {
+            if (activeOption === 0) {
                 return null;
             }
             this.setState({activeOption: activeOption - 1});
@@ -62,37 +70,37 @@ export class Autocomplete extends Component<any>{
             if (activeOption === filteredOptions.length - 1) {
                 return null;
             }
-            this.setState({ activeOption: activeOption + 1 })
+            this.setState({activeOption: activeOption + 1})
         }
     };
 
 
     render() {
-
         const {
             onChange,
             onClick,
             onKeyDown,
-            state: { activeOption, filteredOptions, showOptions, userInput } 
+            state: {activeOption, filteredOptions, showOptions, userInput}
         } = this;
 
         let optionList;
 
         if (showOptions && userInput) {
-            if(filteredOptions.length) {
+            if (filteredOptions.length) {
                 optionList = (
-                    <ul className="options"> 
-                    { filteredOptions.map((optionName: string, index: number) => {
-                        let clazzName;
-                        if ( index === activeOption ) {
-                            clazzName = 'option-active'
-                        }
-                        return (
-                            <li className = {clazzName ? 'option-active' : 'option'} key={optionName} onClick={onClick}>
-                                {optionName}
-                            </li>
-                        );
-                    })}
+                    <ul className="options">
+                        {filteredOptions.map((optionName: string, index: number) => {
+                            let clazzName;
+                            if (index === activeOption) {
+                                clazzName = 'option-active'
+                            }
+                            return (
+                                <li className={clazzName ? 'option-active' : 'option'} key={optionName}
+                                    onClick={onClick}>
+                                    {optionName}
+                                </li>
+                            );
+                        })}
                     </ul>
                 );
             } else {
@@ -105,18 +113,18 @@ export class Autocomplete extends Component<any>{
         }
 
         return (
-
-        <Fragment>
-                 <div className="search">
-                     <input placeholder= "Select City"
-                            type="text" 
-                            className="search-box"
-                            onChange={onChange}
-                            onKeyDown={onKeyDown}
-                            value={userInput}
-                        />
-                    </div>
-                    {optionList}
+            <Fragment>
+                <div className="search">
+                    <input
+                        placeholder="Select City"
+                        type="text"
+                        className="search-box"
+                        onChange={onChange}
+                        onKeyDown={onKeyDown}
+                        value={userInput}
+                    />
+                </div>
+                {optionList}
             </Fragment>
         )
     }
