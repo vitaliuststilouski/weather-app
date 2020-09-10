@@ -4,7 +4,7 @@ import './autocomplete.css'
 
 type State = {
     activeOption: number,
-    filteredOptions: any,
+    filteredOptions: string[],
     showOptions: boolean,
     userInput: string
 };
