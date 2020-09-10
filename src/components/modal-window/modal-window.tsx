@@ -8,7 +8,6 @@ export class ModalWindow extends Component<any> {
         if (!this.props.showModal) {
             return null
         }
-
         return (<div className="modal-window">
             <form className="modal-window-wrap">
                 <h2 className="modal-window-title">Select City</h2>
