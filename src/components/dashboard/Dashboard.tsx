@@ -12,19 +12,37 @@ interface IState {
 };
 
 export class Dashboard extends Component<any, any> {
-    constructor(props: any) {
-        super(props);
-        this.onCloseWindow = this.onCloseWindow.bind(this);
-        this.onAddCity = this.onAddCity.bind(this);
-        this.onChange = this.onChange.bind(this);
-    }
-
-    maxId = 0;
-
     state: IState = {
         showModal: false,
         city: '',
         cityData: []
+    }
+
+    handleLocalStorage() {
+        const weatherJson = localStorage.setItem('isTrue', JSON.stringify(this.state.cityData))
+    }
+
+    componentDidMount() {
+        this.onCloseWindow = this.onCloseWindow.bind(this);
+        this.onAddCity = this.onAddCity.bind(this);
+        this.onChange = this.onChange.bind(this);
+        const isTrue = localStorage.getItem('isTrue');
+
+        if(isTrue) {
+            this.setState((prevState: any) => {
+                return {
+                    cityData: prevState
+                }
+            })
+        } else {
+            // this.setState({
+            //     cityData: []
+            // })
+        }
+    }
+
+    componentDidUpdate() {
+
     }
 
     showModalWindow() {
@@ -39,25 +57,33 @@ export class Dashboard extends Component<any, any> {
         })
     }
 
+    tranformTemperature(temp: number) {
+        return Math.round(temp) > 0 ? `+${Math.round(temp)}`: `-${Math.round(temp)}`;
+    }
+
     onAddCity = (e: any) => {
         e.preventDefault();
         this.setState((prevState: any) => {
-            console.log(prevState)
             return {showModal: !prevState}
         })
 
         const weather = new WeatherService();
-        const {city}: {city: string} = this.state;
+        let {city} = this.state;
+
+        console.log(this.state)
 
         weather.getCity(city)
             .then((body) => {
-                const newCity = {
-                    cityName: body.name,
-                    cityTemperature: body.main.temp,
-                    cityId: this.maxId++
-                };
-
                 this.setState(({cityData}: { cityData: any }) => {
+
+                    const newCity = {
+                        cityName: body.name,
+                        cityTemperature: this.tranformTemperature(body.main.temp),
+                        cityId: body.id
+                    };
+
+                    this.handleLocalStorage()
+
                     const newCityList = [
                         ...cityData,
                         newCity
@@ -66,7 +92,6 @@ export class Dashboard extends Component<any, any> {
                     return {
                         cityData: newCityList
                     }
-
                 })
             })
     }
@@ -89,12 +114,13 @@ export class Dashboard extends Component<any, any> {
     }
 
     render() {
-        const {city, showModal,  cityData} = this.state;
+        const {city, showModal, cityData} = this.state;
         return (
             <div className="dashboard">
                 <h1 className="title">Weather Forecast</h1>
                 <div className="add-btn-wrapper">
-                    <button className="add-btn" onClick={(): void => this.showModalWindow()}>{cityData.length > 0 ? 'Add City' : 'Select City'}</button>
+                    <button className="add-btn"
+                            onClick={(): void => this.showModalWindow()}>{cityData.length > 0 ? 'Add City' : 'Select City'}</button>
                 </div>
                 <ModalWindow onChange={this.onChange} onClose={this.onCloseWindow} onAddCity={this.onAddCity}
                              showModal={showModal}/>
