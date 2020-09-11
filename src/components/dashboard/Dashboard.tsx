@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {WeatherList} from "../weather-list/weather-list";
 import {ModalWindow} from '../modal-window/modal-window';
-import {WeatherService} from '../../services/weather-service/weather-searvice';
+import {WeatherService} from '../../services/weather-service/weather-service';
 
 import "./dashboard.css";
 
@@ -18,46 +18,31 @@ export class Dashboard extends Component<any, any> {
         cityData: []
     }
 
-    handleLocalStorage() {
-        const weatherJson = localStorage.setItem('isTrue', JSON.stringify(this.state.cityData))
-    }
-
     componentDidMount() {
-        this.onCloseWindow = this.onCloseWindow.bind(this);
-        this.onAddCity = this.onAddCity.bind(this);
-        this.onChange = this.onChange.bind(this);
-        const isTrue = localStorage.getItem('isTrue');
+        const weatherWidgets = localStorage.getItem('weatherWidgets');
 
-        if(isTrue) {
-            this.setState((prevState: any) => {
-                return {
-                    cityData: prevState
-                }
-            })
-        } else {
-            // this.setState({
-            //     cityData: []
-            // })
-        }
-    }
-
-    componentDidUpdate() {
+        let initialWeatherItems: any = weatherWidgets ?  JSON.parse(weatherWidgets) : [];
+        this.setState((prevState: any) => ({
+            ...prevState,
+            cityData: initialWeatherItems
+        }))
 
     }
 
-    showModalWindow() {
+    showModalWindow = () => {
         this.setState({
+            city: '',
             showModal: true
         })
     }
 
-    onCloseWindow() {
+    onCloseWindow = () => {
         this.setState({
             showModal: !this.state.showModal
         })
     }
 
-    tranformTemperature(temp: number) {
+    tranformTemperature = (temp: number) => {
         return Math.round(temp) > 0 ? `+${Math.round(temp)}`: `-${Math.round(temp)}`;
     }
 
@@ -70,20 +55,24 @@ export class Dashboard extends Component<any, any> {
         const weather = new WeatherService();
         let {city} = this.state;
 
-        console.log(this.state)
+        const setLocalStorage = (cityItem: any) =>  {
+            localStorage.setItem('weatherWidgets', JSON.stringify(cityItem))
+        }
 
         weather.getCity(city)
             .then((body) => {
+                const {cityData} = this.state;
+
+                const newCity = {
+                    cityName: body.name,
+                    cityTemperature: this.tranformTemperature(body.main.temp),
+                    country: body.sys.country,
+                    cityId: body.id
+                };
+
+                setLocalStorage([...cityData, newCity]);
+
                 this.setState(({cityData}: { cityData: any }) => {
-
-                    const newCity = {
-                        cityName: body.name,
-                        cityTemperature: this.tranformTemperature(body.main.temp),
-                        cityId: body.id
-                    };
-
-                    this.handleLocalStorage()
-
                     const newCityList = [
                         ...cityData,
                         newCity
@@ -114,7 +103,8 @@ export class Dashboard extends Component<any, any> {
     }
 
     render() {
-        const {city, showModal, cityData} = this.state;
+        const {showModal, cityData} = this.state;
+
         return (
             <div className="dashboard">
                 <h1 className="title">Weather Forecast</h1>
@@ -124,7 +114,7 @@ export class Dashboard extends Component<any, any> {
                 </div>
                 <ModalWindow onChange={this.onChange} onClose={this.onCloseWindow} onAddCity={this.onAddCity}
                              showModal={showModal}/>
-                {city ? <WeatherList cityDataList={cityData} onDeleted={this.onDeleteCity}/> : null}
+                <WeatherList cityDataList={cityData} onDeleted={this.onDeleteCity}/>
             </div>
         );
     }
