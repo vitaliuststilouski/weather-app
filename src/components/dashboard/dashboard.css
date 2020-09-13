@@ -1,7 +1,9 @@
 .dashboard {
-    width: 600px;
+    width: 1020px;
     margin: 0 auto;
     margin-top: 50px;
+    font-family: 'Baloo Tammudu 2', cursive;
+    text-transform: uppercase;
 }
 
 .title {
@@ -10,4 +12,29 @@
 
 .add-btn-wrapper {
     text-align: center;
+    margin: 8px;
+}
+
+.add-btn {
+    padding: 10px 15px;
+    border-radius: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    outline: none;
+    color: #FFF;
+    border: none;
+    box-shadow: 0 8px #999;
+    background-color: rgb(65, 168, 163);
+    box-shadow: 0 8px #999;
+}
+
+.add-btn:hover {
+    background-color: #407279;
+}
+
+add-btn:active {
+    background-color: #407279;
+    box-shadow: 0 8px #666;
+    transform: translateY(4px);
+
 }

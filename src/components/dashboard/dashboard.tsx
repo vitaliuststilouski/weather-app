@@ -1,18 +1,23 @@
-import React, {Component} from "react";
-import {WeatherList} from "../weather-list/weather-list";
-import {ModalWindow} from '../modal-window/modal-window';
-import {WeatherService} from '../../services/weather-service/weather-service';
+import React, { Component, ChangeEvent, MouseEvent } from "react";
+import { WeatherList } from "../weather-list/weather-list";
+import { ModalWindow } from '../modal-window/modal-window';
+import { AddCityForm } from '../add-city/add-city';
+import WeatherService from '../../services/weather-service/weather-service';
+import {IWeatherWidget} from './iweather-widget.interface' ;
+import { IWeatherItem } from '../../services/weather-service/weather-service.interface'
 
 import "./dashboard.css";
 
-interface IState {
+
+interface IDashboardState {
     showModal: boolean,
     city: string,
-    cityData: any,
+    cityData: IWeatherWidget[],
+    userInput?: string
 };
 
-export class Dashboard extends Component<any, any> {
-    state: IState = {
+export class Dashboard extends Component<{}, IDashboardState> {
+    state  = {
         showModal: false,
         city: '',
         cityData: []
@@ -21,8 +26,8 @@ export class Dashboard extends Component<any, any> {
     componentDidMount() {
         const weatherWidgets = localStorage.getItem('weatherWidgets');
 
-        let initialWeatherItems: any = weatherWidgets ?  JSON.parse(weatherWidgets) : [];
-        this.setState((prevState: any) => ({
+        let initialWeatherItems: any = weatherWidgets ? JSON.parse(weatherWidgets) : []; // any?
+        this.setState((prevState) => ({
             ...prevState,
             cityData: initialWeatherItems
         }))
@@ -38,41 +43,45 @@ export class Dashboard extends Component<any, any> {
 
     onCloseWindow = () => {
         this.setState({
-            showModal: !this.state.showModal
+            showModal: false
         })
     }
 
-    tranformTemperature = (temp: number) => {
-        return Math.round(temp) > 0 ? `+${Math.round(temp)}`: `-${Math.round(temp)}`;
-    }
+    onSelectCity = (e: any) => {
+        this.setState({
 
-    onAddCity = (e: any) => {
-        e.preventDefault();
-        this.setState((prevState: any) => {
-            return {showModal: !prevState}
+            userInput: e.currentTarget.textContent
         })
 
-        const weather = new WeatherService();
-        let {city} = this.state;
+    };
 
-        const setLocalStorage = (cityItem: any) =>  {
+    transformTemperature = (temp: number) => {
+        return Math.round(temp) > 0 ? `+${Math.round(temp)}` : `-${Math.round(temp)}`;
+    }
+
+    onAddCity = (event: MouseEvent<HTMLButtonElement>) => { // How to define type?
+        event.preventDefault()
+        let { city } = this.state;
+        this.onCloseWindow();
+
+        const setLocalStorage = (cityItem: IWeatherWidget[]) => {
             localStorage.setItem('weatherWidgets', JSON.stringify(cityItem))
         }
 
-        weather.getCity(city)
+        WeatherService.getWeather(city)
             .then((body) => {
-                const {cityData} = this.state;
+                const { cityData } = this.state;
 
                 const newCity = {
                     cityName: body.name,
-                    cityTemperature: this.tranformTemperature(body.main.temp),
+                    cityTemperature: this.transformTemperature(body.main.temp),
                     country: body.sys.country,
                     cityId: body.id
                 };
 
                 setLocalStorage([...cityData, newCity]);
 
-                this.setState(({cityData}: { cityData: any }) => {
+                this.setState(({ cityData }) => {
                     const newCityList = [
                         ...cityData,
                         newCity
@@ -85,15 +94,28 @@ export class Dashboard extends Component<any, any> {
             })
     }
 
-    onChange = (e: any) => {
+    getInputValue(value: string) {
+        console.log(value)
+    }
+
+    onChange = (event: ChangeEvent<HTMLInputElement>) => {
         this.setState(({
-            city: e.currentTarget.value
+            city: event.currentTarget.value
         }))
     }
 
     onDeleteCity = (id: number) => {
-        this.setState(({cityData}: { cityData: any }) => {
-            const cityIdx = cityData.findIndex((el: any) => el.cityId === id);
+        const parseLocalStorage: IWeatherWidget[] = JSON.parse(localStorage.weatherWidgets);
+        const deleteLocalItem = parseLocalStorage.findIndex((el) => el.cityId === id);
+
+        localStorage.setItem('weatherWidgets', JSON.stringify([...parseLocalStorage.slice(0, deleteLocalItem), ...parseLocalStorage.slice(deleteLocalItem + 1)]));
+
+        if (parseLocalStorage.length === 1) {
+            localStorage.clear()
+        }
+
+        this.setState(({ cityData }) => {
+            const cityIdx = cityData.findIndex((el) => el.cityId === id);
             const updatedCities = [...cityData.slice(0, cityIdx), ...cityData.slice(cityIdx + 1)];
 
             return {
@@ -103,18 +125,21 @@ export class Dashboard extends Component<any, any> {
     }
 
     render() {
-        const {showModal, cityData} = this.state;
+        const { showModal, cityData } = this.state;
 
         return (
             <div className="dashboard">
                 <h1 className="title">Weather Forecast</h1>
                 <div className="add-btn-wrapper">
                     <button className="add-btn"
-                            onClick={(): void => this.showModalWindow()}>{cityData.length > 0 ? 'Add City' : 'Select City'}</button>
+                        onClick={(): void => this.showModalWindow()}>{cityData.length > 0 ? 'Add City' : 'Select City'}</button>
                 </div>
-                <ModalWindow onChange={this.onChange} onClose={this.onCloseWindow} onAddCity={this.onAddCity}
-                             showModal={showModal}/>
-                <WeatherList cityDataList={cityData} onDeleted={this.onDeleteCity}/>
+                <ModalWindow onChange={this.onChange} onCloseWindow={this.onCloseWindow} onAddCity={this.onAddCity}
+                    showModal={showModal}>
+                        <AddCityForm />
+                </ModalWindow>
+
+                <WeatherList cityDataList={cityData} onDeleted={this.onDeleteCity} />
             </div>
         );
     }
