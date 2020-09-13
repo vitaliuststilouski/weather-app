@@ -1,18 +1,16 @@
+import { ClientApiResponseData } from './client-api.interface';
 export class APICities {
-    _apiCities = 'http://localhost:3000/cities.json';
+    private apiCities = '/cities.json';
 
-    async getCities() {
-        const response = await fetch(`${this._apiCities}`);
+    async getCities(): Promise<ClientApiResponseData> {
+        const response = await fetch(this.apiCities);
 
         if (!response.ok) {
             throw new Error(`Could not fetch, received ${response.status} `)
         }
-        return await  response.json();
-    }
 
-    getItems() {
-        return this.getCities()
+        const citiesData = response.json();
+
+        return citiesData;
     }
 }
-
-

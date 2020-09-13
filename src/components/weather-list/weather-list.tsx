@@ -1,23 +1,22 @@
-import React, {Component, Fragment} from "react";
-import {WeatherListItem} from "../weather-list-item/weather-list-item";
+import React from "react";
+import { WeatherListItem } from "../weather-list-item/weather-list-item";
+import { IWeatherWidget } from '../dashboard/iweather-widget.interface';
+
 import "./weather-list.css";
 
-export class WeatherList extends Component<any, any> {
-    render() {
-        const {cityDataList} = this.props;
-        const cityElements = cityDataList.map((el: any, i: number): JSX.Element => {
-            const {...cityProps} = el;
-            return (
-                <Fragment key={i}>
-                    <WeatherListItem {...cityProps} onDeleted={this.props.onDeleted}/>
-                </Fragment>
-            )
-        });
+interface IWeatherListProps {
+    cityDataList: IWeatherWidget[],
+    onDeleted: (cityId: number) => void;
+}
 
-        return (
-            <div className="cellList">
-                {cityElements}
-            </div>
-        )
-    }
-};
+export const WeatherList: React.FC<IWeatherListProps> = ({cityDataList, onDeleted}) => {
+    const cityElements = cityDataList.map((cityItem, i) =>
+        <WeatherListItem key={i} weatherWidget={cityItem} onDeleted={onDeleted} />
+    );
+
+    return (
+        <div className="cellList">
+            {cityElements}
+        </div>
+    )
+}

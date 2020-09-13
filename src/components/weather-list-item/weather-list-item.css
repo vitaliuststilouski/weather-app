@@ -1,8 +1,9 @@
 .cell {
     width: 200px;
-    margin-top: 20px;
+    margin: 10px;
     display: inline-block;
     text-align: center;
     border: 1px solid red;
     box-sizing: border-box;
+    border-radius: 5px;
 }

@@ -1,19 +1,20 @@
-import React, {Component, Fragment} from "react";
+import React, {Component, Fragment, ChangeEvent, MouseEvent} from "react";
 import {APICities} from '../../services/cities-api/cities-api'
 
 
 import './autocomplete.css'
 
 
-interface IsAutocompleteState {
+interface IAutocompleteState {
     activeOption: number,
     filteredOptions: string[],
     showOptions: boolean,
-    userInput: string
+    userInput: string | null
 };
 
-export class Autocomplete extends Component<any> {
-    state: IsAutocompleteState = {
+export class Autocomplete extends Component<any, IAutocompleteState> {
+    
+    state = {
         activeOption: 0,
         filteredOptions: [],
         showOptions: false,
@@ -21,16 +22,17 @@ export class Autocomplete extends Component<any> {
     };
 
 
-    getInput = (e: any) => this.props.onInput(e);
+    getInput = (event: ChangeEvent<HTMLInputElement>) => this.props.onInput(event);
 
-    onChange = (e: any) => {
+    onChange = (event: ChangeEvent<HTMLInputElement>) => {
+
         const {options} = this.props;
-        const userInput = e.currentTarget.value;
+        const userInput = event.currentTarget.value;
 
-        this.getInput(e);
+        this.getInput(event);
 
         const filteredOptions = options.filter(
-            (optionName: any) =>
+            (optionName: string) =>
                 optionName.toLowerCase().indexOf(userInput.toLowerCase()) > -1
         );
 
@@ -38,23 +40,25 @@ export class Autocomplete extends Component<any> {
             activeOption: 0,
             filteredOptions,
             showOptions: true,
-            userInput: e.currentTarget.value
+            userInput: event.currentTarget.value
         });
     };
 
-    onClick = (e: any) => {
+    onSelectCity = (e: MouseEvent<HTMLLIElement>) => {
         this.setState({
             activeOption: 0,
             filteredOptions: [],
             showOptions: false,
             userInput: e.currentTarget.textContent
         })
+
+
     };
 
     formCitiesArray = () => {
         const apiCities = new APICities();
 
-        apiCities.getItems()
+        apiCities.getCities()
             .then((body) => {
                 body.map((el: any) => console.log(el.name, el.country ))
             })
@@ -77,7 +81,6 @@ export class Autocomplete extends Component<any> {
         const {activeOption, filteredOptions} = this.state;
 
         if (e.keyCode === 13) {
-            console.log('13');
             this.setState({
                 activeOption: 0,
                 showOptions: false,
@@ -91,7 +94,6 @@ export class Autocomplete extends Component<any> {
             }
             this.setState({activeOption: activeOption - 1});
         } else if (e.keyCode === 40) {
-            console.log('40');
 
             if (activeOption === filteredOptions.length - 1) {
                 return null;
@@ -100,14 +102,14 @@ export class Autocomplete extends Component<any> {
         }
     };
 
+    onPassValue = () => {
+        console.log(this.state.userInput)
+    }
+
 
     render() {
-        const {
-            onChange,
-            onClick,
-            onKeyDown,
-            state: {activeOption, filteredOptions, showOptions, userInput}
-        } = this;
+        const {onChange, onSelectCity, onKeyDown } = this;
+        const  {activeOption, filteredOptions, showOptions, userInput} = this.state;
 
         let optionList;
 
@@ -121,8 +123,8 @@ export class Autocomplete extends Component<any> {
                                 clazzName = 'option-active'
                             }
                             return (
-                                <li className={clazzName ? 'option-active' : 'option'} key={optionName}
-                                    onClick={onClick}>
+                                <li className={clazzName ? 'option-active' : 'option'} key={index}
+                                    onClick={onSelectCity}>
                                     {optionName}
                                 </li>
                             );
@@ -148,6 +150,7 @@ export class Autocomplete extends Component<any> {
                         onChange={onChange}
                         onKeyDown={onKeyDown}
                         value={userInput}
+                        autoFocus
                     />
                 </div>
                 {optionList}
