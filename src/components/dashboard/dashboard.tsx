@@ -1,13 +1,11 @@
-import React, { Component, ChangeEvent, MouseEvent } from "react";
+import React, { Component, ChangeEvent } from "react";
 import { WeatherList } from "../weather-list/weather-list";
 import { ModalWindow } from '../modal-window/modal-window';
-import { AddCityForm } from '../add-city/add-city';
+import { AddCityForm } from '../add-city-form/add-city-form';
 import WeatherService from '../../services/weather-service/weather-service';
 import {IWeatherWidget} from './iweather-widget.interface' ;
-import { IWeatherItem } from '../../services/weather-service/weather-service.interface'
 
 import "./dashboard.css";
-
 
 interface IDashboardState {
     showModal: boolean,
@@ -47,28 +45,17 @@ export class Dashboard extends Component<{}, IDashboardState> {
         })
     }
 
-    onSelectCity = (e: any) => {
-        this.setState({
-
-            userInput: e.currentTarget.textContent
-        })
-
-    };
-
     transformTemperature = (temp: number) => {
         return Math.round(temp) > 0 ? `+${Math.round(temp)}` : `-${Math.round(temp)}`;
     }
 
-    onAddCity = (event: MouseEvent<HTMLButtonElement>) => { // How to define type?
-        event.preventDefault()
-        let { city } = this.state;
+    onAddCity = (value: any) => { // How to define type?
         this.onCloseWindow();
-
         const setLocalStorage = (cityItem: IWeatherWidget[]) => {
             localStorage.setItem('weatherWidgets', JSON.stringify(cityItem))
         }
 
-        WeatherService.getWeather(city)
+        WeatherService.getWeather(value)
             .then((body) => {
                 const { cityData } = this.state;
 
@@ -92,10 +79,6 @@ export class Dashboard extends Component<{}, IDashboardState> {
                     }
                 })
             })
-    }
-
-    getInputValue(value: string) {
-        console.log(value)
     }
 
     onChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -131,12 +114,11 @@ export class Dashboard extends Component<{}, IDashboardState> {
             <div className="dashboard">
                 <h1 className="title">Weather Forecast</h1>
                 <div className="add-btn-wrapper">
-                    <button className="add-btn"
-                        onClick={(): void => this.showModalWindow()}>{cityData.length > 0 ? 'Add City' : 'Select City'}</button>
+                    <button className="select-btn"
+                        onClick={this.showModalWindow}>{cityData.length > 0 ? 'Add City' : 'Select City'}</button>
                 </div>
-                <ModalWindow onChange={this.onChange} onCloseWindow={this.onCloseWindow} onAddCity={this.onAddCity}
-                    showModal={showModal}>
-                        <AddCityForm />
+                <ModalWindow onAddCity={this.onAddCity} showModal={showModal} onCloseWindow={this.onCloseWindow}>
+                        <AddCityForm onAddCity={this.onAddCity}  onCloseWindow={this.onCloseWindow} />
                 </ModalWindow>
 
                 <WeatherList cityDataList={cityData} onDeleted={this.onDeleteCity} />

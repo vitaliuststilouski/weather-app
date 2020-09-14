@@ -1,5 +1,5 @@
 import { ClientApiResponseData } from './client-api.interface';
-export class APICities {
+class APICities {
     private apiCities = '/cities.json';
 
     async getCities(): Promise<ClientApiResponseData> {
@@ -14,3 +14,5 @@ export class APICities {
         return citiesData;
     }
 }
+
+export default new APICities();

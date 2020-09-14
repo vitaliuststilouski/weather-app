@@ -1,16 +1,22 @@
-import React, { Component, ChangeEvent, MouseEvent } from "react";
+import React, {ChangeEvent} from "react";
 
-export const InputForm = () => {
-    return (
+import './input-form.css'
+
+interface  IInputFormProps {
+    value: string,
+    onCityChange: (event: ChangeEvent<HTMLInputElement>) => void,
+
+}
+
+export const InputForm: React.FC<IInputFormProps> = (props: any) => {
+        return (
             <input
-                name="CityName"
                 placeholder="Select City"
                 type="text"
                 className="search-box"
-                // onChange={onChange}
-                // onKeyDown={onKeyDown}
-                // value={userInput}
+                value={props.value}
+                onChange={props.onCityChange}
                 autoFocus
             />
-    )
+        )
 }
