@@ -8,8 +8,11 @@ interface  IInputFormProps {
 
 }
 
+
+
 export const InputForm: React.FC<IInputFormProps> = (props: any) => {
-        return (
+
+    return (
             <input
                 placeholder="Select City"
                 type="text"

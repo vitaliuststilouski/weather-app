@@ -13,30 +13,29 @@ interface IAddCityFormProps {
 
 interface IAddCityFormState {
     value: string,
-    showOptions: boolean
+    showOptions: boolean,
+    citiesList: any
 }
 
 export class AddCityForm extends Component <any, IAddCityFormState> {
     state = {
         value: '',
-        showOptions: false
+        showOptions: false,
+        citiesList: []
     }
 
-    handleChange = (event: any) => {
-        this.setState({
-            value: event.target.value,
-            showOptions: true
-        })
+    componentDidMount() {
+        APICities.getCities()
+            .then((body) => {
+                const { citiesList } = this.state;
+                const cityInfo = body.map((cityItem: any) => cityItem.name);
+                this.setState( {
+                    citiesList: cityInfo
+                })
+            })
     }
 
-    // onChange = (event: any) => {
-    //     this.setState(({
-    //         value: event.target.value,
-    //         showOptions: true
-    //     }))
-    // }
-
-    Debounce = (fn: any, delay: number) => {
+    debounce = (fn: any, delay: number) => {
         let timeoutID: any;
         return function (...args: any) {
             if(timeoutID) {
@@ -47,13 +46,16 @@ export class AddCityForm extends Component <any, IAddCityFormState> {
                 fn(...args)
             }, delay)
         }
+
+        console.log('1')
     }
 
-    onGetCityArray = () => {
-        APICities.getCities()
-            .then((body) => {
-                const city = body.map((cityItem: any) => console.log(cityItem.name, cityItem.country))
-            })
+    handleChange = (event: any) => {
+        this.setState({
+            value: event.target.value,
+            showOptions: true
+        })
+
     }
 
     setCity = (event: any) => {
@@ -68,12 +70,7 @@ export class AddCityForm extends Component <any, IAddCityFormState> {
         return (
             <Fragment>
                 <InputForm onCityChange={this.handleChange} value={this.state.value}/>
-                <Autocomplete value={this.state.value} setCity={this.setCity} options={[
-                    "Minsk",
-                    "London",
-                    "Moscow",
-                    "Rome",
-                    "Grodno"]}/>
+                <Autocomplete value={this.state.value} setCity={this.setCity} options={this.state.citiesList}/>
                 <div className="btn-group">
                     <button className="add-btn" onClick={() => this.props.onAddCity(this.state.value)}>Add City</button>
                     <button className="close-btn" onClick={this.props.onCloseWindow}>Close</button>

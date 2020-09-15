@@ -81,12 +81,6 @@ export class Dashboard extends Component<{}, IDashboardState> {
             })
     }
 
-    onChange = (event: ChangeEvent<HTMLInputElement>) => {
-        this.setState(({
-            city: event.currentTarget.value
-        }))
-    }
-
     onDeleteCity = (id: number) => {
         const parseLocalStorage: IWeatherWidget[] = JSON.parse(localStorage.weatherWidgets);
         const deleteLocalItem = parseLocalStorage.findIndex((el) => el.cityId === id);
