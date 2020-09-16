@@ -46,8 +46,6 @@ export class AddCityForm extends Component <any, IAddCityFormState> {
                 fn(...args)
             }, delay)
         }
-
-        console.log('1')
     }
 
     handleChange = (event: any) => {
