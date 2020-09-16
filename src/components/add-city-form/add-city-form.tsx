@@ -14,7 +14,7 @@ interface IAddCityFormProps {
 interface IAddCityFormState {
     value: string,
     showOptions: boolean,
-    citiesList: any
+    citiesList: string[]
 }
 
 export class AddCityForm extends Component <any, IAddCityFormState> {
@@ -27,7 +27,6 @@ export class AddCityForm extends Component <any, IAddCityFormState> {
     componentDidMount() {
         APICities.getCities()
             .then((body) => {
-                const { citiesList } = this.state;
                 const cityInfo = body.map((cityItem: any) => cityItem.name);
                 this.setState( {
                     citiesList: cityInfo

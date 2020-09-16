@@ -49,7 +49,7 @@ export class Dashboard extends Component<{}, IDashboardState> {
         return Math.round(temp) > 0 ? `+${Math.round(temp)}` : `-${Math.round(temp)}`;
     }
 
-    onAddCity = (value: any) => { // How to define type?
+    onAddCity = (value: any) => {
         this.onCloseWindow();
         const setLocalStorage = (cityItem: IWeatherWidget[]) => {
             localStorage.setItem('weatherWidgets', JSON.stringify(cityItem))
