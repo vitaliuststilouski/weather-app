@@ -1,9 +1,9 @@
-export interface CityInfo {
-    country: string,
-    lat: string,
-    lng: string,
-    name: string,
+export interface ICityInfo {
+    country: string;
+    lat: string;
+    lng: string;
+    name: string;
 }
 
-// export type ClientApiResponseData = CityInfo[][];
+// export type ClientApiResponseData = ICityInfo[][];
 export type ClientApiResponseData = any;

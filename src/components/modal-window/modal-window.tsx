@@ -1,6 +1,5 @@
 import React, { Component, MouseEvent } from 'react';
-
-import './modal-window.css';
+import './modal-window.scss';
 
 export interface IModalWindowProps {
     onAddCity: (event: MouseEvent<HTMLButtonElement>) => void;
@@ -10,17 +9,15 @@ export interface IModalWindowProps {
 
 export class ModalWindow extends Component<IModalWindowProps> {
     render() {
-        const { showModal} = this.props;
+        const { showModal } = this.props;
 
-        if (!showModal) {
-            return null
-        }
+        if (!showModal) return null;
 
-        return (<div className="modal-window">
-            <form className="modal-window-wrap">
-                <h2 className="modal-window-title">Select City</h2>
+        return (<div className='modal-window'>
+            <form className='modal-window-wrap'>
+                <h2 className='modal-window-title'>Select City</h2>
                 {this.props.children}
             </form>
-        </div>)
+        </div>);
     }
 }

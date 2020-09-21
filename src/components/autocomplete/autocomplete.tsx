@@ -1,25 +1,23 @@
-import React from "react";
+import React from 'react';
+import './autocomplete.scss';
 
-import './autocomplete.css'
-
-interface AutoCompleteProps {
-    value: string,
-    setCity: any,
-    options: string[]
+interface IAutoCompleteProps {
+    value: string;
+    setCity: any;
+    options: string[];
 }
 
-export const Autocomplete: React.FC<AutoCompleteProps> = (props) => {
-    const {options, value, setCity} = props;
+export const Autocomplete: React.FC<IAutoCompleteProps> = ({ options, value, setCity }) => {
     if (!value) {
-        return null
+        return null;
     }
 
     const filtered = options.filter((option) => option.toLowerCase().includes(value.toLowerCase()));
     const autoCompleteList = filtered.map((option, index) => {
-        return <li onClick={setCity} key={index}>{option}</li>
-    })
+        return <li onClick={setCity} key={index}>{option}</li>;
+    });
 
     return (
-        <ul className="options">{autoCompleteList}</ul>
-    )
-}
+        <ul className='options'>{autoCompleteList}</ul>
+    );
+};
