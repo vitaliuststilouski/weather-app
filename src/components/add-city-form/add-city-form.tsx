@@ -2,22 +2,23 @@ import React, { Component, Fragment, MouseEvent, ChangeEvent } from 'react';
 import { Autocomplete } from '../autocomplete/autocomplete';
 import { InputForm } from '../input-form/input-form';
 import APICities from '../../services/cities-api/cities-api';
-// import { debounce } from '../../utils/utils';
 import './add-city-form.scss';
 
 interface IAddCityFormProps {
     handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
     onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    onCloseWindow: (event: MouseEvent<HTMLButtonElement>) => void;
     setCity: (event: MouseEvent<HTMLButtonElement>) => void;
+    onAddCity: (event: MouseEvent<HTMLButtonElement>) => void;
 }
 
 interface IAddCityFormState {
-    value: string;
+    value: any;
     showOptions: boolean;
     citiesList: string[];
 }
 
-export class AddCityForm extends Component<any, IAddCityFormState> {
+export class AddCityForm extends Component<any, IAddCityFormState> { // cant' think up type
     state = {
         value: '',
         showOptions: false,
