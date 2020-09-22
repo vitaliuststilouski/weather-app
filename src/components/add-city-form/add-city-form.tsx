@@ -5,20 +5,18 @@ import APICities from '../../services/cities-api/cities-api';
 import './add-city-form.scss';
 
 interface IAddCityFormProps {
-    handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
-    onChange: (event: ChangeEvent<HTMLInputElement>) => void;
     onCloseWindow: (event: MouseEvent<HTMLButtonElement>) => void;
-    setCity: (event: MouseEvent<HTMLButtonElement>) => void;
-    onAddCity: (event: MouseEvent<HTMLButtonElement>) => void;
+
+    onAddCity: (value: string) => void;
 }
 
 interface IAddCityFormState {
-    value: any;
+    value: string;
     showOptions: boolean;
     citiesList: string[];
 }
 
-export class AddCityForm extends Component<any, IAddCityFormState> { // cant' think up type
+export class AddCityForm extends Component<IAddCityFormProps, IAddCityFormState> { // cant' think up type
     state = {
         value: '',
         showOptions: false,
@@ -28,14 +26,14 @@ export class AddCityForm extends Component<any, IAddCityFormState> { // cant' th
     componentDidMount() {
         APICities.getCities()
             .then((body) => {
-                const cityInfo = body.map((cityItem: any) => cityItem.name);
+                const cityInfo = body.map((cityItem) => cityItem.name);
                 this.setState({
                     citiesList: cityInfo
                 });
             });
     }
 
-    handleChange = (event: any) => {
+    handleChange = (event: ChangeEvent<HTMLInputElement>) => { // ?
         this.setState({
             value: event.target.value,
             showOptions: true

@@ -5,5 +5,5 @@ export interface ICityInfo {
     name: string;
 }
 
-// export type ClientApiResponseData = ICityInfo[][];
-export type ClientApiResponseData = any;
+export type ClientApiResponseData = ICityInfo[];
+// export type ClientApiResponseData = any;
