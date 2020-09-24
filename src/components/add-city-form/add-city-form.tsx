@@ -6,17 +6,16 @@ import './add-city-form.scss';
 
 interface IAddCityFormProps {
     onCloseWindow: (event: MouseEvent<HTMLButtonElement>) => void;
-
     onAddCity: (value: string) => void;
 }
 
 interface IAddCityFormState {
-    value: string;
+    value: string | null;
     showOptions: boolean;
     citiesList: string[];
 }
 
-export class AddCityForm extends Component<IAddCityFormProps, IAddCityFormState> { // cant' think up type
+export class AddCityForm extends Component<IAddCityFormProps, IAddCityFormState> {
     state = {
         value: '',
         showOptions: false,
@@ -40,7 +39,7 @@ export class AddCityForm extends Component<IAddCityFormProps, IAddCityFormState>
         });
     }
 
-    setCity = (event: any) => {
+    setCity = (event: any) => { // ???
         this.setState({
             value: event.target.textContent,
             showOptions: false

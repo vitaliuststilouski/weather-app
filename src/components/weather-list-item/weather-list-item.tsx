@@ -2,13 +2,12 @@ import React from 'react';
 import { IWeatherWidget } from '../dashboard/iweather-widget.interface';
 import "./weather-list-item.scss";
 
-interface WeatherListItemProps {
+interface IWeatherListItemProps {
     weatherWidget: IWeatherWidget;
     onDeleted: (cityId: number) => void;
 }
 
-export const WeatherListItem: React.FC<WeatherListItemProps> = ({ weatherWidget, onDeleted }) => {
-    console.log();
+export const WeatherListItem: React.FC<IWeatherListItemProps> = ({ weatherWidget, onDeleted }) => {
     const { cityName, cityTemperature, country, cityId } = weatherWidget;
     return (
         <div key={cityId} className="cell">

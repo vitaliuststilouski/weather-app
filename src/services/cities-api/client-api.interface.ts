@@ -6,4 +6,3 @@ export interface ICityInfo {
 }
 
 export type ClientApiResponseData = ICityInfo[];
-// export type ClientApiResponseData = any;
