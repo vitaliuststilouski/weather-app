@@ -1,9 +1,9 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 import './autocomplete.scss';
 
 interface IAutoCompleteProps {
     value: string;
-    setCity: (value: MouseEvent<HTMLLIElement>) => void;
+    setCity: (value: string) => void;
     options: string[];
 }
 
@@ -12,12 +12,11 @@ export const Autocomplete: React.FC<IAutoCompleteProps> = ({ options, value, set
         return null;
     }
 
-    const filtered = options.filter((option) => option.toLowerCase().includes(value.toLowerCase()));
-    const autoCompleteList = filtered.map((option, index) => {
-        return <li className="option" onClick={(value) => setCity(value)} key={index}>{option}</li>;
-    });
-
+    const filteredOptions = options.filter((option) => option.toLowerCase().includes(value.toLowerCase()));
+    
     return (
-        <ul className='options'>{autoCompleteList}</ul>
+        <ul className='options'>{
+            filteredOptions.map((option, index) => <li key={index} className="option" onClick={() => setCity(option)}>{option}</li>)
+        }</ul>
     );
 };

@@ -1,12 +1,13 @@
-import React, { Component, MouseEvent } from 'react';
+import React, { Component } from 'react';
 import './modal-window.scss';
 
 export interface IModalWindowProps {
-    onAddCity: (event: MouseEvent<HTMLButtonElement>) => void;
-    onCloseWindow: (event: MouseEvent<HTMLButtonElement>) => void;
+    onAddCity: (value: string) => void;
+    onCloseWindow: () => void;
     showModal: boolean;
 }
 
+// TODO: REACT.FC
 export class ModalWindow extends Component<IModalWindowProps> {
     render() {
         const { showModal } = this.props;

@@ -8,13 +8,9 @@ interface IWeatherListProps {
     onDeleted: (cityId: number) => void;
 }
 
-export const WeatherList: React.FC<IWeatherListProps> = ({ cityDataList, onDeleted }) => {
-    const cityElements = cityDataList.map((cityItem, i) =>
-        <WeatherListItem key={i} weatherWidget={cityItem} onDeleted={onDeleted} />
-    );
-    return (
-        <div className="cellList">
-            {cityElements}
-        </div>
-    );
-};
+export const WeatherList: React.FC<IWeatherListProps> = ({ cityDataList, onDeleted }) =>
+    <div className="cellList">
+        {cityDataList.map((cityItem, i) =>
+            <WeatherListItem key={i} weatherWidget={cityItem} onDeleted={onDeleted} />
+        )}
+    </div>;

@@ -32,16 +32,16 @@ export class AddCityForm extends Component<IAddCityFormProps, IAddCityFormState>
             });
     }
 
-    handleChange = (event: ChangeEvent<HTMLInputElement>) => { // ?
+    handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         this.setState({
             value: event.target.value,
             showOptions: true
         });
     }
 
-    setCity = (event: any) => { // ???
+    setCity = (value: string) => { 
         this.setState({
-            value: event.target.textContent,
+            value,
             showOptions: false
         });
     };

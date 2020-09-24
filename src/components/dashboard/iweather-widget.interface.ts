@@ -3,5 +3,5 @@ export interface IWeatherWidget {
     cityTemperature: string;
     country: string;
     cityId: number;
-    onDeleted?: any;
+    onDeleted?: string;
 }

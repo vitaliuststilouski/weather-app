@@ -16,6 +16,6 @@ export interface IWeatherItem {
     };
     timezone: number;
     visibility: number;
-    weather: any[];
+    weather: string[];
     wind: { speed: number; deg: number };
 }
