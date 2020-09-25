@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import './index.scss';
+import { Dashboard } from './components/dashboard/dashboard';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App color="red"/>
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <Dashboard />
+    </React.StrictMode>,
+    document.getElementById('root')
 );

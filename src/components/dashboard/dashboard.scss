@@ -1,0 +1,41 @@
+$backgroundСolor-dark-green-1-1: #407279;
+
+.dashboard {
+    width: 1020px;
+    margin: 0 auto;
+    margin-top: 50px;
+    font-family: 'Baloo Tammudu 2', cursive;
+    text-transform: uppercase;
+
+    .title {
+        text-align: center;
+    }
+    
+}
+.add-btn-wrapper {
+    text-align: center;
+    margin: 8px;
+
+    .select-btn {
+        padding: 10px 15px;
+        border-radius: 15px;
+        font-size: 24px;
+        cursor: pointer;
+        outline: none;
+        color: #fff;
+        border: none;
+        box-shadow: 0 8px #999;
+        background-color: rgb(65, 168, 163);
+    }
+    
+    .select-btn:hover {
+        background-color: $backgroundСolor-dark-green-1-1;
+    }
+    
+    .select-btn:active {
+        background-color: $backgroundСolor-dark-green-1-1;
+        box-shadow: 0 8px #666;
+        transform: translateY(4px);
+    }
+}
+
