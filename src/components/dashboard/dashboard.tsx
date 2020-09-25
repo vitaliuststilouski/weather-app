@@ -81,7 +81,6 @@ export class Dashboard extends Component<{}, IDashboardState> {
                 <ModalWindow onAddCity={this.onAddCity} showModal={showModal} onCloseWindow={this.onToggleModalWindow}>
                     <AddCityForm onAddCity={this.onAddCity} onCloseWindow={this.onToggleModalWindow} />
                 </ModalWindow>
-
                 <WeatherList cityDataList={cityData} onDeleted={this.onDeleteCity} />
             </div>
         );

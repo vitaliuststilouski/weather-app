@@ -40,7 +40,7 @@ export class AddCityForm extends Component<IAddCityFormProps, IAddCityFormState>
         });
     }
 
-    setCity = (value: string) => { 
+    setCity = (value: string) => {
         this.setState({
             value,
             showOptions: false

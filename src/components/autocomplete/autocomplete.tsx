@@ -14,7 +14,7 @@ export const Autocomplete: React.FC<IAutoCompleteProps> = ({ options, value, set
     }
 
     const filteredOptions = options.filter((option) => option.toLowerCase().includes(value.toLowerCase()));
-    
+
     return (
         <ul className='options'>{
             filteredOptions.map((option, index) => <li key={index} className="option" onClick={() => setCity(option)}>{option}</li>)

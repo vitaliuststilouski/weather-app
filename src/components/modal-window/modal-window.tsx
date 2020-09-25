@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import './modal-window.scss';
 
@@ -8,18 +8,14 @@ export interface IModalWindowProps {
     showModal: boolean;
 }
 
-// TODO: REACT.FC
-export class ModalWindow extends Component<IModalWindowProps> {
-    render() {
-        const { showModal } = this.props;
+export const ModalWindow: React.FC<IModalWindowProps> = ({ showModal, children }) => {
 
-        if (!showModal) return null;
+    if (!showModal) return null;
 
-        return (<div className='modal-window'>
-            <form className='modal-window-wrap'>
-                <h2 className='modal-window-title'>Select City</h2>
-                {this.props.children}
-            </form>
-        </div>);
-    }
-}
+    return (<div className='modal-window'>
+        <form className='modal-window-wrap'>
+            <h2 className='modal-window-title'>Select City</h2>
+            {children}
+        </form>
+    </div>);
+};
