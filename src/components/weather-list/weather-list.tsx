@@ -1,6 +1,7 @@
 import React from 'react';
 import { WeatherListItem } from "../weather-list-item/weather-list-item";
 import { IWeatherWidget } from '../dashboard/iweather-widget.interface';
+
 import "./weather-list.scss";
 
 interface IWeatherListProps {

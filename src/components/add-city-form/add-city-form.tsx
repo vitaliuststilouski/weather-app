@@ -2,6 +2,7 @@ import React, { Component, Fragment, MouseEvent, ChangeEvent } from 'react';
 import { Autocomplete } from '../autocomplete/autocomplete';
 import { InputForm } from '../input-form/input-form';
 import APICities from '../../services/cities-api/cities-api';
+
 import './add-city-form.scss';
 
 interface IAddCityFormProps {

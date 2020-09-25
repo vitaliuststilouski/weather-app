@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import './modal-window.scss';
 
 export interface IModalWindowProps {
